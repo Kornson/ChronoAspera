@@ -18,8 +18,8 @@ namespace ChronoAspera
         public Form1()
         {
             InitializeComponent();
-            comboBoxActions.Items.AddRange(new object[] { "Appel","Redaction consultation", "Recherche juridique","Réponse au mail"});
-            saveFileDialogAction.Filter = "Fichiers texte|*.txt|Tous les fichiers|*.*";
+            comboBoxActions.Items.AddRange(new object[] { "Appel","Redaction consultation", "Recherche juridique","Réponse au mail"});// Lister les actions à chronométrer : unfichier de config
+            saveFileDialogAction.Filter = "Fichiers texte|*.txt|Tous les fichiers|*.*";// filtre des fichiers à modifier avec un .xls
             saveFileDialogAction.FilterIndex = 2;
             saveFileDialogAction.RestoreDirectory = true;
 
@@ -30,27 +30,27 @@ namespace ChronoAspera
         {
             {
                 
-                stopwatch.Start();
-                chronoTimer.Start();
-                chronoTimer.Tick += ChronoTimer_Tick;
+                stopwatch.Start(); // Lancement chrono
+                chronoTimer.Start(); // lancement du timer qui va mettre a jour l'affichage du chrono
+                chronoTimer.Tick += ChronoTimer_Tick; // création du Tick : se délcare toute les 100 ms pour éxécuter une action
 
             }
         }
 
         private void ChronoTimer_Tick(object sender, EventArgs e)
         {
-            TimeSpan ts = stopwatch.Elapsed;
+            TimeSpan ts = stopwatch.Elapsed; // prend le temps écoulé du chronométre depuis le start jusqu'a l'appel de la fonction Elapsed
 
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-            ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds);
-            labelChrono.Text = elapsedTime;
+            ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds); // ùise en forme de l'affichage
+            labelChrono.Text = elapsedTime; // envoi de l'affichage
         }
 
-        private void sChrono_Click(object sender, EventArgs e)
+        private void sChrono_Click(object sender, EventArgs e) // clic sur le stop
         {
-            stopwatch.Stop();
+            stopwatch.Stop(); // arréte le chrono
             
-            TimeSpan ts = stopwatch.Elapsed;
+            TimeSpan ts = stopwatch.Elapsed; // prend le temps écoulé
 
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
             ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds);
@@ -61,38 +61,38 @@ namespace ChronoAspera
 
         private void rChono_Click(object sender, EventArgs e)
         {
-            stopwatch.Reset();
+            stopwatch.Reset(); // reset du chrono
             TimeSpan ts = stopwatch.Elapsed;
 
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
            ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds);
-            labelChrono.Text = elapsedTime;
+            labelChrono.Text = elapsedTime; // Remise à Zéro affichage
 
             }
 
-        private void buttonAddAction_Click(object sender, EventArgs e)
+        private void buttonAddAction_Click(object sender, EventArgs e) //ajouter une action dans la combo box des actions
         {
             comboBoxActions.Items.Add(textBoxAddAction.Text);
             textBoxAddAction.Text = string.Empty; 
         }
 
-        private void SaveAction_Click(object sender, EventArgs e)
+        private void SaveAction_Click(object sender, EventArgs e) //gére la sauvegarde et l'inscription d'une action dans le fichier
         {
             if (saveFileDialogAction.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
 
-                    Stream myStream = saveFileDialogAction.OpenFile();
+                    Stream myStream = saveFileDialogAction.OpenFile(); //Ouvre le flux sur le fichier sélectionné
 
                     if (myStream != null)
                     {
                         using (myStream)
                         {
-                            using (StreamWriter writer = new StreamWriter(myStream, Encoding.UTF8))
+                            using (StreamWriter writer = new StreamWriter(myStream, Encoding.UTF8))// écriture de l'action dans le fichier cible
                             {
                                 writer.WriteLine(labelChrono.Text + " - " + comboBoxActions.SelectedItem);
-                                saveActionTextbox.Text = saveFileDialogAction.FileName;
+                                saveActionTextbox.Text = saveFileDialogAction.FileName; // renvoie une string sur la textbox qui indique la source du fichier
                                 labelListAction.Text = "Liste des actions : ";
                             }
                         }
@@ -103,7 +103,7 @@ namespace ChronoAspera
                     MessageBox.Show("Erreur survenue lors de la sauvegarde : " + ex.Message);
                 }
 
-                using (StreamReader rd = new StreamReader(saveActionTextbox.Text))
+                using (StreamReader rd = new StreamReader(saveActionTextbox.Text)) //flux pour mettre à jour la liste des actions
                 {
                     string line;
                     while ((line = rd.ReadLine()) != null)
@@ -114,15 +114,15 @@ namespace ChronoAspera
             }
         }
 
-        private void updateAction_Click(object sender, EventArgs e)
+        private void updateAction_Click(object sender, EventArgs e) // mettre à jour la liste des actions et le fichier avec la nouvelle action
         {
             textBoxListAction.Clear();
-            using (StreamWriter wr = File.AppendText(saveActionTextbox.Text))
+            using (StreamWriter wr = File.AppendText(saveActionTextbox.Text))//ecrit sur le fichier
             {
                 wr.WriteLine(labelChrono.Text + " - " + comboBoxActions.SelectedItem);
 
             }
-            using (StreamReader rd = new StreamReader(saveActionTextbox.Text))
+            using (StreamReader rd = new StreamReader(saveActionTextbox.Text))//affiche dans la liste des actions le contenu du fichier
             {
                 string line;
                 while ((line = rd.ReadLine()) != null)
@@ -134,17 +134,17 @@ namespace ChronoAspera
             }
         }
 
-        private void importSaveAction_Click(object sender, EventArgs e)
+        private void importSaveAction_Click(object sender, EventArgs e) //import d'une sauvegarde
         {
             if (openFileDialogImportAction.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
-                    Stream mySteam = openFileDialogImportAction.OpenFile();
+                    Stream myStream = openFileDialogImportAction.OpenFile();
 
-                    if (mySteam != null)
+                    if (myStream != null)
                     {
-                        using (mySteam)
+                        using (myStream)
                         {
                             saveActionTextbox.Text = openFileDialogImportAction.FileName;
                         }
@@ -153,7 +153,7 @@ namespace ChronoAspera
                             string line;
                             while ((line = rd.ReadLine()) != null)
                             {
-                                textBoxListAction.AppendText(line + Environment.NewLine);
+                                textBoxListAction.AppendText(line + Environment.NewLine);// met à jour la liste des actions
 
                             }
 
@@ -166,5 +166,6 @@ namespace ChronoAspera
                 }
             }
         }
+
     }
 }
