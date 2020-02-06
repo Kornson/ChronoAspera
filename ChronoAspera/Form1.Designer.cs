@@ -47,6 +47,7 @@
             this.textBoxListAction = new System.Windows.Forms.TextBox();
             this.importSaveAction = new System.Windows.Forms.Button();
             this.openFileDialogImportAction = new System.Windows.Forms.OpenFileDialog();
+            this.delAction = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cStart
@@ -169,7 +170,7 @@
             // textBoxListAction
             // 
             this.textBoxListAction.AcceptsReturn = true;
-            this.textBoxListAction.Location = new System.Drawing.Point(419, 345);
+            this.textBoxListAction.Location = new System.Drawing.Point(419, 349);
             this.textBoxListAction.Multiline = true;
             this.textBoxListAction.Name = "textBoxListAction";
             this.textBoxListAction.ScrollBars = System.Windows.Forms.ScrollBars.Both;
@@ -191,9 +192,20 @@
             // 
             this.openFileDialogImportAction.FileName = "openFileDialog1";
             // 
+            // delAction
+            // 
+            this.delAction.Location = new System.Drawing.Point(490, 559);
+            this.delAction.Name = "delAction";
+            this.delAction.Size = new System.Drawing.Size(110, 42);
+            this.delAction.TabIndex = 16;
+            this.delAction.Text = "Supprimer Action";
+            this.delAction.UseVisualStyleBackColor = true;
+            this.delAction.Click += new System.EventHandler(this.delAction_Click);
+            // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(1119, 783);
+            this.Controls.Add(this.delAction);
             this.Controls.Add(this.importSaveAction);
             this.Controls.Add(this.textBoxListAction);
             this.Controls.Add(this.labelListAction);
@@ -234,6 +246,7 @@
         private System.Windows.Forms.TextBox textBoxListAction;
         private System.Windows.Forms.Button importSaveAction;
         private System.Windows.Forms.OpenFileDialog openFileDialogImportAction;
+        private System.Windows.Forms.Button delAction;
     }
 }
 

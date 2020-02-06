@@ -167,5 +167,22 @@ namespace ChronoAspera
             }
         }
 
+        private void delAction_Click(object sender, EventArgs e)
+        {
+            List <string> listAction = new List<string>();
+                        
+            using (StreamReader rd = new StreamReader(saveActionTextbox.Text)) //flux pour mettre à jour la liste des actions
+            {
+                string line;
+                while ((line = rd.ReadLine()) != null)
+                {
+                    listAction.Add(line);
+                }
+                //Console.WriteLine("Capacité : {0}", listAction.Capacity);
+            }
+        
+            Form2 deletActions = new Form2(listAction);
+            deletActions.ShowDialog();
+        }
     }
 }
